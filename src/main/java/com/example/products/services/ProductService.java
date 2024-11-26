@@ -27,12 +27,6 @@ public class ProductService {
   private final ProductRepository productRepository;
   private final ProductMapper productMapper;
 
-  @Transactional(readOnly = true)
-  public ProductSearchResponseDTO findById(String id) {
-    return productRepository.findById(Long.valueOf(id))
-        .map(productMapper::toDTO)
-        .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
-  }
 
   @Transactional(readOnly = true)
   public List<ProductSearchResponseDTO> getAll() {
@@ -40,6 +34,13 @@ public class ProductService {
         .stream()
         .map(productMapper::toDTO)
         .toList();
+  }
+
+  @Transactional(readOnly = true)
+  public ProductSearchResponseDTO findById(String id) {
+    return productRepository.findById(Long.valueOf(id))
+        .map(productMapper::toDTO)
+        .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
   }
 
   public long create(ProductUpsertDTO productCreateDTO) {
