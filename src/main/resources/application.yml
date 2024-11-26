@@ -1,0 +1,36 @@
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        use_sql_comments: 'true'
+        format_sql: 'true'
+        show_sql: 'true'
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: ${db-url:jdbc:postgresql://localhost:5432/products?useSSL=false&createDatabaseIfNotExist=true}
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+      hibernate:
+        type:
+          descriptor: TRACE
+        sql: TRACE
+      nodeValue: TRACE
+    blog: TRACE
+
+springdoc:
+  api-docs:
+    path: /api-docs
