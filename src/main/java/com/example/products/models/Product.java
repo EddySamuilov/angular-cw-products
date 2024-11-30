@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -27,4 +29,8 @@ public class Product extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   private ProductType type;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 }

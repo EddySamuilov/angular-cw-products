@@ -15,6 +15,7 @@ public interface ProductMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "created", ignore = true)
   @Mapping(target = "modified", ignore = true)
+  @Mapping(target = "user", ignore = true)
   Product toEntity(ProductUpsertDTO source);
 
 }

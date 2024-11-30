@@ -22,4 +22,6 @@ public class ProductUpsertDTO {
   @NotNull(message = "The product type must be provided!")
   @Enumerated(EnumType.STRING)
   private ProductType type;
+
+  private String userId;
 }
