@@ -57,7 +57,6 @@ public class ProductService {
 
     product.setTitle(productUpdateDTO.getTitle());
     product.setDescription(productUpdateDTO.getDescription());
-    product.setType(productUpdateDTO.getType());
     product.setModified(LocalDateTime.now());
 
     productRepository.save(product);

@@ -1,6 +1,6 @@
 package com.example.products.models;
 
-import com.example.products.enums.ProductType;
+import com.example.products.enums.CategoryType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,8 +34,9 @@ public class Product extends BaseEntity {
   @Column(nullable = false)
   private BigDecimal price;
 
-  @Enumerated(EnumType.STRING)
-  private ProductType type;
+  @ManyToOne
+  @JoinColumn(name = "category_id", nullable = false)
+  private Category category;
 
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
