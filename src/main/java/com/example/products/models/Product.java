@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "products")
@@ -26,6 +28,11 @@ public class Product extends BaseEntity {
   @Column(nullable = false)
   @Size(min = 5, max = 255, message = "The description must be at least 5 characters and must not exceed 255 characters!")
   private String description;
+
+  private String imageUrl;
+
+  @Column(nullable = false)
+  private BigDecimal price;
 
   @Enumerated(EnumType.STRING)
   private ProductType type;
