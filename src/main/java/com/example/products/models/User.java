@@ -49,7 +49,4 @@ public class User extends BaseEntity {
   )
   private Set<Role> roles = new HashSet<>();
 
-  @OneToMany(mappedBy = "user")
-  private List<Product> products;
-
 }

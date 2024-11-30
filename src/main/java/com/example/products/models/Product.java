@@ -35,10 +35,10 @@ public class Product extends BaseEntity {
   private BigDecimal price;
 
   @ManyToOne
-  @JoinColumn(name = "category_id", nullable = false)
+  @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
   private Category category;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 }
