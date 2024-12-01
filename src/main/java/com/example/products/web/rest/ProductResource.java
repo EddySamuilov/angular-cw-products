@@ -1,6 +1,5 @@
 package com.example.products.web.rest;
 
-import com.example.products.dtos.CategoryDTO;
 import com.example.products.dtos.ProductSearchResponseDTO;
 import com.example.products.dtos.ProductUpsertDTO;
 import com.example.products.services.ProductService;

@@ -1,6 +1,5 @@
 package com.example.products.services;
 
-import com.example.products.dtos.CategoryDTO;
 import com.example.products.dtos.ProductSearchResponseDTO;
 import com.example.products.dtos.ProductUpsertDTO;
 import com.example.products.exceptions.ProductNotFoundException;
@@ -59,7 +58,6 @@ public class ProductService {
     Product productOpt = productRepository.findById(Long.valueOf(id))
         .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
-//    CategoryDTO categoryDTO = categoryService.findById(productUpdateDTO.getCategoryId());
     Category category = categoryMapper.toEntity(productUpdateDTO.getCategory());
 
     productOpt.setTitle(productUpdateDTO.getTitle());

@@ -1,8 +1,6 @@
 package com.example.products.web.rest;
 
 import com.example.products.dtos.CategoryDTO;
-import com.example.products.dtos.ProductSearchResponseDTO;
-import com.example.products.dtos.ProductUpsertDTO;
 import com.example.products.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
