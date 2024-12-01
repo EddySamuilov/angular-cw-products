@@ -11,7 +11,6 @@ public interface CategoryMapper {
 
   CategoryDTO toDTO(Category category);
 
-  @Mapping(target = "id", ignore = true)
   @Mapping(target = "created", ignore = true)
   @Mapping(target = "modified", ignore = true)
   Category toEntity(CategoryDTO source);

@@ -5,13 +5,13 @@ VALUES
 (3, 'admin', 'admin', 'Admin', 'User', 'admin.user@example.com', NULL, NOW(), NOW());
 
 
-INSERT INTO categories (id, type, description, created, modified)
+INSERT INTO categories (id, type, description, image_url, created, modified)
 VALUES
-(1, 'ELECTRONICS', 'Electronic gadgets and devices', NOW(), NOW()),
-(2, 'BOOKS', 'Books and educational materials', NOW(), NOW()),
-(3, 'CLOTHES', 'Apparel and accessories', NOW(), NOW()),
-(4, 'FURNITURE', 'Home and office furniture', NOW(), NOW()),
-(5, 'OTHER', 'All the other stuff', NOW(), NOW());
+(1, 'ELECTRONICS', 'Electronic gadgets and devices', 'https://vavelectronics.com/wp-content/uploads/2024/01/electroniks.jpeg', NOW(), NOW()),
+(2, 'BOOKS', 'Books and educational materials', 'https://www.publishcentral.com.au/wp-content/uploads/2023/05/book-pile-of-must-read-books-scaled1.jpeg', NOW(), NOW()),
+(3, 'CLOTHES', 'Apparel and accessories', 'https://media.burford.co.uk/images/SNY04089.jpg_edit.width-640_ln7jm6QxYVkHFHaT.jpg', NOW(), NOW()),
+(4, 'FURNITURE', 'Home and office furniture', 'https://mojoboutique.com/cdn/shop/articles/organic_modern_furniture_1344x.jpg?v=1704830548', NOW(), NOW()),
+(5, 'OTHER', 'All the other stuff', 'https://upload.wikimedia.org/wikipedia/commons/2/20/Resin-identification-code-7-OTHER.svg', NOW(), NOW());
 
 
 INSERT INTO products (id, title, description, image_url, price, category_id, user_id, created, modified)

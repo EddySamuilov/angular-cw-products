@@ -11,9 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDTO {
-  @Enumerated(EnumType.STRING)
+  private Long id;
+
   private String type;
 
-  @Column(nullable = false)
   private String description;
+
+  private String imageUrl;
 }

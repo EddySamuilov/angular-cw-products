@@ -1,9 +1,12 @@
 package com.example.products.services;
 
+import com.example.products.dtos.CategoryDTO;
 import com.example.products.dtos.ProductSearchResponseDTO;
 import com.example.products.dtos.ProductUpsertDTO;
 import com.example.products.exceptions.ProductNotFoundException;
+import com.example.products.mappers.CategoryMapper;
 import com.example.products.mappers.ProductMapper;
+import com.example.products.models.Category;
 import com.example.products.models.Product;
 import com.example.products.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +29,8 @@ public class ProductService {
 
   private final ProductRepository productRepository;
   private final ProductMapper productMapper;
-
+  private final CategoryMapper categoryMapper;
+  private final CategoryService categoryService;
 
   @Transactional(readOnly = true)
   public List<ProductSearchResponseDTO> getAll() {
@@ -51,18 +55,31 @@ public class ProductService {
     return productRepository.save(product).getId();
   }
 
-  public void update(String id, ProductUpsertDTO productUpdateDTO) {
-    Product product = productRepository.findById(Long.valueOf(id))
+  public ProductSearchResponseDTO update(String id, ProductUpsertDTO productUpdateDTO) {
+    Product productOpt = productRepository.findById(Long.valueOf(id))
         .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
-    product.setTitle(productUpdateDTO.getTitle());
-    product.setDescription(productUpdateDTO.getDescription());
-    product.setModified(LocalDateTime.now());
+//    CategoryDTO categoryDTO = categoryService.findById(productUpdateDTO.getCategoryId());
+    Category category = categoryMapper.toEntity(productUpdateDTO.getCategory());
 
-    productRepository.save(product);
+    productOpt.setTitle(productUpdateDTO.getTitle());
+    productOpt.setDescription(productUpdateDTO.getDescription());
+    productOpt.setPrice(productUpdateDTO.getPrice());
+    productOpt.setCategory(category);
+    productOpt.setImageUrl(productOpt.getImageUrl());
+    productOpt.setModified(LocalDateTime.now());
+
+    return productMapper.toDTO(productRepository.save(productOpt));
   }
 
   public void delete(String id) {
     productRepository.deleteById(Long.valueOf(id));
+  }
+
+  public List<ProductSearchResponseDTO> getProductsByCategory(String categoryId) {
+    List<Product> productsByCategory = productRepository.findAllByCategoryId(Long.valueOf(categoryId));
+    return productsByCategory.stream()
+        .map(productMapper::toDTO)
+        .toList();
   }
 }

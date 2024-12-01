@@ -12,17 +12,18 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductUpsertDTO {
 
+  private String id;
+
   @NotBlank(message = "The title must not be blank!")
   private String title;
 
   @Size(min = 5, max = 255, message = "The description must be at least 5 and must not exceed 255 characters!")
   private String description;
 
-  private String userId;
-
   private String imageUrl;
+
+  private CategoryDTO category;
 
   private BigDecimal price;
 
-  private Category category;
 }

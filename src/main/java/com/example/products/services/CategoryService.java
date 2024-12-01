@@ -1,6 +1,7 @@
 package com.example.products.services;
 
 import com.example.products.dtos.CategoryDTO;
+import com.example.products.enums.CategoryType;
 import com.example.products.exceptions.CategoryNotFoundException;
 import com.example.products.mappers.CategoryMapper;
 import com.example.products.models.Category;
@@ -46,5 +47,11 @@ public class CategoryService {
 
   public void delete(String id) {
     categoryRepository.deleteById(Long.valueOf(id));
+  }
+
+  public CategoryDTO findByType(CategoryType type) {
+    return categoryRepository.findByType(type)
+        .map(categoryMapper::toDTO)
+        .orElseThrow(() -> new CategoryNotFoundException(CATEGORY_NOT_FOUND));
   }
 }
