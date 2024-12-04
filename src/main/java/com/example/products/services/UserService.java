@@ -6,6 +6,7 @@ import com.example.products.mappers.UserMapper;
 import com.example.products.models.User;
 import com.example.products.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +19,12 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final UserMapper userMapper;
-//  private final PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
   public User register(UserRegisterDTO userRegisterDTO) {
     User user = userMapper.toEntity(userRegisterDTO);
 
-//    user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+    user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
     user.setPassword(userRegisterDTO.getPassword());
     user.setCreated(LocalDateTime.now());
     user.setModified(LocalDateTime.now());
