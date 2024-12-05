@@ -24,7 +24,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/categories")
-@CrossOrigin(origins = "http://localhost:4200")
 public class CategoryResource {
 
   private final CategoryService categoryService;
@@ -32,7 +31,7 @@ public class CategoryResource {
   @Operation(summary = "Retrieves all the existing categories.")
   @ApiResponse(responseCode = "200", description = "Request completed successfully!")
   @ApiResponse(responseCode = "401", description = "Bad request! Check the validation restrictions!")
-  @ApiResponse(responseCode = "404", description = "Products not found!")
+  @ApiResponse(responseCode = "404", description = "Categories not found!")
   @GetMapping
   public ResponseEntity<List<CategoryDTO>> getAll() {
     return ResponseEntity.ok(categoryService.getAll());
@@ -41,7 +40,7 @@ public class CategoryResource {
   @Operation(summary = "Retrieves a category by the provided id.")
   @ApiResponse(responseCode = "200", description = "Request completed successfully!")
   @ApiResponse(responseCode = "401", description = "Bad request! Check the validation restrictions!")
-  @ApiResponse(responseCode = "404", description = "Product not found!")
+  @ApiResponse(responseCode = "404", description = "Category not found!")
   @GetMapping("/{id}")
   public ResponseEntity<CategoryDTO> findById(@PathVariable String id) {
     return ResponseEntity.ok(categoryService.findById(id));

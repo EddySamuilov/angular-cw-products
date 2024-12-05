@@ -4,6 +4,9 @@ server:
     include-stacktrace: never
 
 spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
   sql:
     init:
       mode: always
@@ -38,3 +41,6 @@ logging:
 springdoc:
   api-docs:
     path: /api-docs
+
+jwt:
+  secret: "classpath:certs/public.pem"
