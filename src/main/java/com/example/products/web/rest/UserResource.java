@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,12 +17,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,7 +31,6 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/users")
-@CrossOrigin(origins = "http://localhost:4200")
 public class UserResource {
 
   private final JWTUtils jwtUtils;
@@ -62,13 +60,23 @@ public class UserResource {
     return ResponseEntity.ok(user);
   }
 
-//  @GetMapping("/profile")
-//  public ResponseEntity<UserProfileDTO> getUserProfile(String email) {
-//    return userService.getUserProfile();
-//  }
-//
-//  @PutMapping("/profile")
-//  public ResponseEntity<UserProfileDTO> updateUserProfile() {
-//    return userService.updateUserProfile();
-//  }
+  @GetMapping("/profile")
+  public ResponseEntity<UserProfileDTO> getUserProfile(@RequestParam String username, HttpServletRequest request) {
+    UserProfileDTO userProfile = userService.getUserProfile(username);
+
+    URI uri = ServletUriComponentsBuilder.fromRequest(request)
+        .replacePath("/api/v1/users/profile?username=" + username)
+        .build()
+        .toUri();
+
+    return ResponseEntity.created(uri).body(userProfile);
+  }
+
+  @PutMapping("/profile")
+  public ResponseEntity<UserProfileDTO> updateUserProfile(
+      @RequestParam String username,
+      @Valid @RequestBody UserProfileDTO userProfileDTO
+  ) {
+    return ResponseEntity.ok(userService.updateUserProfile(username, userProfileDTO));
+  }
 }

@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
+  private static final String USER_NOT_FOUND = "User with username: [%s] not found!";
+
   private final UserRepository userRepository;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
@@ -42,16 +44,26 @@ public class UserService implements UserDetailsService {
   }
 
   public UserProfileDTO getUserProfile(String username) {
-    return null;
+    User user = findByUsername(username);
+    return userMapper.toProfileDTO(user);
   }
 
-  public UserProfileDTO updateUserProfile(String username) {
-    return null;
+  public UserProfileDTO updateUserProfile(String username, UserProfileDTO userProfileDTO) {
+    User user = findByUsername(username);
+
+    user.setUsername(userProfileDTO.getUsername());
+    user.setFirstName(userProfileDTO.getFirstName());
+    user.setLastName(userProfileDTO.getLastName());
+    user.setEmail(userProfileDTO.getEmail());
+    user.setImageURL(userProfileDTO.getImageURL());
+    user.setModified(LocalDateTime.now());
+
+    return userMapper.toProfileDTO(userRepository.save(user));
   }
 
   public User findByUsername(String username) {
     return userRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
   }
 
   @Override

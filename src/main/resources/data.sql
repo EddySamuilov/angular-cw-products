@@ -1,8 +1,8 @@
 INSERT INTO users (id, username, password, first_name, last_name, email, image_url, created, modified)
 VALUES
-(1, 'johndoe', '$2a$10$zgz3B5h5xp1fgELD5tnHMecmeSJD1bvNAZ8iB8ggOPANm5zgz4fKy', 'John', 'Doe', 'john.doe@example.com', '', NOW(), NOW()),
-(2, 'janedoe', '$2a$10$zgz3B5h5xp1fgELD5tnHMecmeSJD1bvNAZ8iB8ggOPANm5zgz4fKy', 'Jane', 'Doe', 'jane.doe@example.com', '', NOW(), NOW()),
-(3, 'admin', '$2a$10$huMpOs8OF/WO/vm7Jqh7KO7H8TcDSFIt2hHxdRAp6AlZJkOldYJeu', 'Admin', 'User', 'admin.user@example.com', NULL, NOW(), NOW());
+(1, 'johndoe', '$2a$10$zgz3B5h5xp1fgELD5tnHMecmeSJD1bvNAZ8iB8ggOPANm5zgz4fKy', 'John', 'Doe', 'john.doe@example.com', 'https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Patrick_Star.svg/1200px-Patrick_Star.svg.png', NOW(), NOW()),
+(2, 'janedoe', '$2a$10$zgz3B5h5xp1fgELD5tnHMecmeSJD1bvNAZ8iB8ggOPANm5zgz4fKy', 'Jane', 'Doe', 'jane.doe@example.com', 'https://upload.wikimedia.org/wikipedia/en/thumb/3/33/Patrick_Star.svg/1200px-Patrick_Star.svg.png', NOW(), NOW()),
+(3, 'admin', '$2a$10$huMpOs8OF/WO/vm7Jqh7KO7H8TcDSFIt2hHxdRAp6AlZJkOldYJeu', 'Admin', 'User', 'admin.user@example.com', 'https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/SpongeBob_SquarePants_character.svg/330px-SpongeBob_SquarePants_character.svg.png', NOW(), NOW());
 
 
 INSERT INTO categories (id, type, description, image_url, created, modified)

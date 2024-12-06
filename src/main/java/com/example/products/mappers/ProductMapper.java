@@ -1,5 +1,6 @@
 package com.example.products.mappers;
 
+import com.example.products.dtos.ProductCreateDTO;
 import com.example.products.dtos.ProductSearchResponseDTO;
 import com.example.products.dtos.ProductUpsertDTO;
 import com.example.products.models.Product;
@@ -18,5 +19,12 @@ public interface ProductMapper {
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "category", ignore = true)
   Product toEntity(ProductUpsertDTO source);
+
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "created", ignore = true)
+  @Mapping(target = "modified", ignore = true)
+  @Mapping(target = "user", ignore = true)
+  @Mapping(target = "category", ignore = true)
+  Product toEntity(ProductCreateDTO source);
 
 }

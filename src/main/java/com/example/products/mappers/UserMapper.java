@@ -22,6 +22,13 @@ public interface UserMapper {
     @Mapping(target = "modified", ignore = true)
     User toEntity(UserRegisterDTO source);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "created", ignore = true)
+    @Mapping(target = "modified", ignore = true)
+    User toEntity(UserProfileDTO source);
+
     @AfterMapping
     default void setTimestamps(UserRegisterDTO userRegisterDTO, @MappingTarget User user) {
         user.setCreated(LocalDateTime.now());

@@ -1,5 +1,6 @@
 package com.example.products.web.rest;
 
+import com.example.products.dtos.ProductCreateDTO;
 import com.example.products.dtos.ProductSearchResponseDTO;
 import com.example.products.dtos.ProductUpsertDTO;
 import com.example.products.services.ProductService;
@@ -9,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,16 +58,16 @@ public class ProductResource {
   @Operation(summary = "Creates a product.")
   @ApiResponse(responseCode = "200", description = "Request completed successfully!")
   @ApiResponse(responseCode = "401", description = "Bad request! Check the validation restrictions!")
-  @PostMapping("/save")
-  public ResponseEntity<Void> create(@RequestBody @Valid ProductUpsertDTO productUpsertDTO, HttpServletRequest request) {
-    long productId = productService.create(productUpsertDTO);
+  @PostMapping("/add")
+  public ResponseEntity<Long> create(@RequestBody @Valid ProductCreateDTO productCreateDTO, HttpServletRequest request) {
+    long productId = productService.create(productCreateDTO);
 
     URI uri = ServletUriComponentsBuilder.fromRequest(request)
         .replacePath("/api/v1/products/{id}")
         .buildAndExpand(productId)
         .toUri();
 
-    return ResponseEntity.created(uri).build();
+    return ResponseEntity.created(uri).body(productId);
   }
 
   @Operation(summary = "Updates a product.")

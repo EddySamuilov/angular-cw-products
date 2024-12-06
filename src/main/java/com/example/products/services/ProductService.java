@@ -1,12 +1,15 @@
 package com.example.products.services;
 
+import com.example.products.dtos.ProductCreateDTO;
 import com.example.products.dtos.ProductSearchResponseDTO;
 import com.example.products.dtos.ProductUpsertDTO;
+import com.example.products.exceptions.CategoryNotFoundException;
 import com.example.products.exceptions.ProductNotFoundException;
 import com.example.products.mappers.CategoryMapper;
 import com.example.products.mappers.ProductMapper;
 import com.example.products.models.Category;
 import com.example.products.models.Product;
+import com.example.products.repositories.CategoryRepository;
 import com.example.products.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -29,7 +32,7 @@ public class ProductService {
   private final ProductRepository productRepository;
   private final ProductMapper productMapper;
   private final CategoryMapper categoryMapper;
-  private final CategoryService categoryService;
+  private final CategoryRepository categoryRepository;
 
   @Transactional(readOnly = true)
   public List<ProductSearchResponseDTO> getAll() {
@@ -46,8 +49,12 @@ public class ProductService {
         .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
   }
 
-  public long create(ProductUpsertDTO productCreateDTO) {
+  public long create(ProductCreateDTO productCreateDTO) {
     Product product = productMapper.toEntity(productCreateDTO);
+    Category category = categoryRepository.findByType(productCreateDTO.getCategoryType())
+        .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+
+    product.setCategory(category);
     product.setCreated(LocalDateTime.now());
     product.setModified(LocalDateTime.now());
 
