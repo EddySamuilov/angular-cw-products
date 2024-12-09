@@ -1,10 +1,12 @@
 package com.example.products.services;
 
+import com.example.products.dtos.CategoryCreateDTO;
 import com.example.products.dtos.CategoryDTO;
 import com.example.products.enums.CategoryType;
 import com.example.products.exceptions.CategoryNotFoundException;
 import com.example.products.mappers.CategoryMapper;
 import com.example.products.models.Category;
+import com.example.products.models.User;
 import com.example.products.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class CategoryService {
 
   private final CategoryRepository categoryRepository;
   private final CategoryMapper categoryMapper;
+  private final UserService userService;
 
   @Transactional(readOnly = true)
   public List<CategoryDTO> getAll() {
@@ -37,21 +40,19 @@ public class CategoryService {
         .orElseThrow(() -> new CategoryNotFoundException(CATEGORY_NOT_FOUND));
   }
 
-  public long create(CategoryDTO categoryDTO) {
-    Category product = categoryMapper.toEntity(categoryDTO);
-    product.setCreated(LocalDateTime.now());
-    product.setModified(LocalDateTime.now());
+  public long create(CategoryCreateDTO categoryCreateDTO) {
+    User user = userService.findByUsername(categoryCreateDTO.getUsername());
+    Category category = categoryMapper.toEntity(categoryCreateDTO);
+    category.setType(categoryCreateDTO.getType().toUpperCase());
+    category.setUser(user);
+    category.setCreated(LocalDateTime.now());
+    category.setModified(LocalDateTime.now());
 
-    return categoryRepository.save(product).getId();
+    return categoryRepository.save(category).getId();
   }
 
   public void delete(String id) {
     categoryRepository.deleteById(Long.valueOf(id));
   }
 
-  public CategoryDTO findByType(CategoryType type) {
-    return categoryRepository.findByType(type)
-        .map(categoryMapper::toDTO)
-        .orElseThrow(() -> new CategoryNotFoundException(CATEGORY_NOT_FOUND));
-  }
 }

@@ -9,16 +9,20 @@ import com.example.products.mappers.CategoryMapper;
 import com.example.products.mappers.ProductMapper;
 import com.example.products.models.Category;
 import com.example.products.models.Product;
+import com.example.products.models.User;
 import com.example.products.repositories.CategoryRepository;
 import com.example.products.repositories.ProductRepository;
+import com.example.products.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -33,6 +37,7 @@ public class ProductService {
   private final ProductMapper productMapper;
   private final CategoryMapper categoryMapper;
   private final CategoryRepository categoryRepository;
+  private final UserService userService;
 
   @Transactional(readOnly = true)
   public List<ProductSearchResponseDTO> getAll() {
@@ -50,10 +55,12 @@ public class ProductService {
   }
 
   public long create(ProductCreateDTO productCreateDTO) {
+    User user = userService.findByUsername(productCreateDTO.getUsername());
     Product product = productMapper.toEntity(productCreateDTO);
     Category category = categoryRepository.findByType(productCreateDTO.getCategoryType())
         .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
 
+    product.setUser(user);
     product.setCategory(category);
     product.setCreated(LocalDateTime.now());
     product.setModified(LocalDateTime.now());

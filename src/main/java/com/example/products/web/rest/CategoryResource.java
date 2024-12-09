@@ -1,5 +1,6 @@
 package com.example.products.web.rest;
 
+import com.example.products.dtos.CategoryCreateDTO;
 import com.example.products.dtos.CategoryDTO;
 import com.example.products.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,16 +50,16 @@ public class CategoryResource {
   @Operation(summary = "Creates a category.")
   @ApiResponse(responseCode = "200", description = "Request completed successfully!")
   @ApiResponse(responseCode = "401", description = "Bad request! Check the validation restrictions!")
-  @PostMapping("/save")
-  public ResponseEntity<Void> create(@RequestBody @Valid CategoryDTO categoryDTO, HttpServletRequest request) {
-    long productId = categoryService.create(categoryDTO);
+  @PostMapping("/add")
+  public ResponseEntity<Long> create(@RequestBody @Valid CategoryCreateDTO categoryCreateDTO, HttpServletRequest request) {
+    long categoryId = categoryService.create(categoryCreateDTO);
 
     URI uri = ServletUriComponentsBuilder.fromRequest(request)
         .replacePath("/api/v1/categories/{id}")
-        .buildAndExpand(productId)
+        .buildAndExpand(categoryId)
         .toUri();
 
-    return ResponseEntity.created(uri).build();
+    return ResponseEntity.created(uri).body(categoryId);
   }
 
 //  @Operation(summary = "Updates a product.")

@@ -1,17 +1,13 @@
 package com.example.products.models;
 
-import com.example.products.enums.CategoryType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @Entity
@@ -20,11 +16,15 @@ import java.util.List;
 @AllArgsConstructor
 public class Category extends BaseEntity {
 
-  @Enumerated(EnumType.STRING)
-  private CategoryType type;
+  @Column(nullable = false)
+  private String type;
 
   @Column(nullable = false)
   private String description;
 
   private String imageUrl;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private User user;
 }
