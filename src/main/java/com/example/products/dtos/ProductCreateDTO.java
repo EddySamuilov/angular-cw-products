@@ -20,7 +20,7 @@ public class ProductCreateDTO {
   private String imageUrl;
 
   @NotBlank(message = "Category should be provided")
-  private CategoryType categoryType;
+  private String categoryType;
 
   private BigDecimal price;
 

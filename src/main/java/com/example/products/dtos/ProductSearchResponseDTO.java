@@ -20,4 +20,5 @@ public class ProductSearchResponseDTO {
   private BigDecimal price;
   private LocalDateTime created;
   private LocalDateTime modified;
+  private String createdBy;
 }

@@ -11,6 +11,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface ProductMapper {
 
+  @Mapping(target = "createdBy", source = "source.user.username")
   ProductSearchResponseDTO toDTO(Product source);
 
   @Mapping(target = "id", ignore = true)
