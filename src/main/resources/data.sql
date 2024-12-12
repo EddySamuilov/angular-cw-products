@@ -22,3 +22,9 @@ VALUES
 (4, 'T-shirt', 'Comfortable cotton t-shirt.', 'https://isto.pt/cdn/shop/files/Heavyweight_Black_ef459afb-ff7a-4f9a-b278-9e9621335444.webp?v=1710414950', 19.99, 3, 2, NOW(), NOW()),
 (5, 'Gold', '99.99999% pure gold.', 'https://cdn.britannica.com/51/173051-050-4C7EF797/gold-metal-Stacks-bars-Blocks-money-mercantilism.jpg', 188.13, 5, 1, NOW(), NOW()),
 (6, 'Dining Table', 'Wooden dining table for six people.', 'https://cdn02.plentymarkets.com/vji7b8phcm0f/item/images/120947/full/Casa-Padrino-Landhausstil-Esstisch-Braun-330-x-110-x-H--77-cm-Rustikaler-Massivholz-Kuechentisch-Rustikale-Massivholz-Esszimmer-Moebel-Landhausstil-Esszimmer-Moebel-120947_5.JPG', 499.99, 4, 1, NOW(), NOW());
+
+INSERT INTO posts (id, title, description, likes, dislikes, product_id, user_id, created, modified)
+VALUES
+(1, 'Really like it', 'It is very good and I like it very much', 2, 1, 1, 3, NOW(), NOW()),
+(2, 'Awesome', 'This product is awesome', 5, 1, 1, 3, NOW(), NOW()),
+(3, 'Not good', 'Not very comfortable and very wooden', 0, 6, 6, 2, NOW(), NOW());

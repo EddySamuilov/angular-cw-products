@@ -1,6 +1,5 @@
 package com.example.products.dtos;
 
-import com.example.products.enums.CategoryType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
