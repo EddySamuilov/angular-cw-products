@@ -8,10 +8,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(componentModel = "spring", uses = PostMapper.class, unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface ProductMapper {
 
   @Mapping(target = "createdBy", source = "source.user.username")
+  @Mapping(target = "posts", source = "posts")
   ProductSearchResponseDTO toDTO(Product source);
 
   @Mapping(target = "id", ignore = true)
@@ -19,6 +20,7 @@ public interface ProductMapper {
   @Mapping(target = "modified", ignore = true)
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "category", ignore = true)
+  @Mapping(target = "posts", ignore = true)
   Product toEntity(ProductUpsertDTO source);
 
   @Mapping(target = "id", ignore = true)
@@ -26,6 +28,7 @@ public interface ProductMapper {
   @Mapping(target = "modified", ignore = true)
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "category", ignore = true)
+  @Mapping(target = "posts", ignore = true)
   Product toEntity(ProductCreateDTO source);
 
 }

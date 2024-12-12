@@ -52,15 +52,15 @@ public class PostResource {
   @ApiResponse(responseCode = "200", description = "Request completed successfully!")
   @ApiResponse(responseCode = "401", description = "Bad request! Check the validation restrictions!")
   @PostMapping("/add")
-  public ResponseEntity<Long> create(@RequestBody @Valid PostCreateDTO postCreateDTO, HttpServletRequest request) {
-    long postId = postService.create(postCreateDTO);
+  public ResponseEntity<PostResponseDTO> create(@RequestBody @Valid PostCreateDTO postCreateDTO, HttpServletRequest request) {
+    PostResponseDTO postResponseDTO = postService.create(postCreateDTO);
 
     URI uri = ServletUriComponentsBuilder.fromRequest(request)
         .replacePath("/api/v1/posts/{id}")
-        .buildAndExpand(postId)
+        .buildAndExpand(postResponseDTO)
         .toUri();
 
-    return ResponseEntity.created(uri).body(postId);
+    return ResponseEntity.created(uri).body(postResponseDTO);
   }
 
   @Operation(summary = "Updates a post.")

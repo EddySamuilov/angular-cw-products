@@ -28,3 +28,9 @@ VALUES
 (1, 'Really like it', 'It is very good and I like it very much', 2, 1, 1, 3, NOW(), NOW()),
 (2, 'Awesome', 'This product is awesome', 5, 1, 1, 3, NOW(), NOW()),
 (3, 'Not good', 'Not very comfortable and very wooden', 0, 6, 6, 2, NOW(), NOW());
+
+INSERT INTO products_posts (posts_id, product_id)
+VALUES
+(1, 1),
+(2, 1),
+(3, 6);

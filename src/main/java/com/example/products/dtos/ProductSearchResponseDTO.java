@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,4 +22,5 @@ public class ProductSearchResponseDTO {
   private LocalDateTime created;
   private LocalDateTime modified;
   private String createdBy;
+  private List<PostResponseDTO> posts;
 }

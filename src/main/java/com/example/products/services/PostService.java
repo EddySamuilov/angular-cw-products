@@ -7,8 +7,10 @@ import com.example.products.exceptions.PostNotFoundException;
 import com.example.products.exceptions.ProductNotFoundException;
 import com.example.products.mappers.PostMapper;
 import com.example.products.models.Post;
+import com.example.products.models.Product;
 import com.example.products.models.User;
 import com.example.products.repositories.PostRepository;
+import com.example.products.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,6 +32,7 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final PostMapper postMapper;
+  private final ProductRepository productRepository;
   private final UserService userService;
 
   @Transactional(readOnly = true)
@@ -46,17 +50,22 @@ public class PostService {
         .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
   }
 
-  public long create(PostCreateDTO postCreateDTO) {
+  public PostResponseDTO create(PostCreateDTO postCreateDTO) {
     User user = userService.findByUsername(postCreateDTO.getUsername());
     Post post = postMapper.toEntity(postCreateDTO);
 
+    Product productOpt = productRepository.findById(postCreateDTO.getProductId()).orElseThrow();
+    productOpt.getPosts().add(post);
+
     post.setUser(user);
-    post.setLikes(0);
-    post.setDislikes(0);
+    post.setProduct(productOpt);
     post.setCreated(LocalDateTime.now());
     post.setModified(LocalDateTime.now());
 
-    return postRepository.save(post).getId();
+    Post newPost = postRepository.save(post);
+    productRepository.save(productOpt);
+
+    return postMapper.toDTO(newPost);
   }
 
   public PostResponseDTO update(String id, PostUpdateDTO postUpdateDTO) {
@@ -66,7 +75,7 @@ public class PostService {
     postOpt.setTitle(postUpdateDTO.getTitle());
     postOpt.setDescription(postUpdateDTO.getDescription());
     postOpt.setLikes(postUpdateDTO.getLikes());
-    postOpt.setDislikes(postOpt.getDislikes());
+    postOpt.setDislikes(postUpdateDTO.getDislikes());
     postOpt.setModified(LocalDateTime.now());
 
     return postMapper.toDTO(postRepository.save(postOpt));
