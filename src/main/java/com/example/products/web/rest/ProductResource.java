@@ -1,5 +1,6 @@
 package com.example.products.web.rest;
 
+import com.example.products.dtos.PagedDTO;
 import com.example.products.dtos.ProductCreateDTO;
 import com.example.products.dtos.ProductSearchResponseDTO;
 import com.example.products.dtos.ProductUpsertDTO;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,14 +36,16 @@ public class ProductResource {
   @ApiResponse(responseCode = "401", description = "Bad request! Check the validation restrictions!")
   @ApiResponse(responseCode = "404", description = "Products not found!")
   @GetMapping
-  public ResponseEntity<List<ProductSearchResponseDTO>> getAll(
-      @RequestParam(value = "categoryId", required = false) String categoryId
+  public ResponseEntity<PagedDTO<ProductSearchResponseDTO>> getAll(
+      @RequestParam(value = "categoryId", required = false) String categoryId,
+      @RequestParam(value = "page", defaultValue = "0") int page,
+      @RequestParam(value = "itemsPerPage", defaultValue = "10") int itemsPerPage
   ) {
     if (categoryId == null) {
-      return ResponseEntity.ok(productService.getAll());
+      return ResponseEntity.ok(productService.getAll(page, itemsPerPage));
     }
 
-    return ResponseEntity.ok(productService.getProductsByCategory(categoryId));
+    return ResponseEntity.ok(productService.getProductsByCategory(categoryId, page, itemsPerPage));
   }
 
   @Operation(summary = "Retrieves a product by the provided id.")

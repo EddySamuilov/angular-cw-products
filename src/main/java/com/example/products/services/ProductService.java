@@ -1,5 +1,6 @@
 package com.example.products.services;
 
+import com.example.products.dtos.PagedDTO;
 import com.example.products.dtos.ProductCreateDTO;
 import com.example.products.dtos.ProductSearchResponseDTO;
 import com.example.products.dtos.ProductUpsertDTO;
@@ -12,17 +13,17 @@ import com.example.products.models.Product;
 import com.example.products.models.User;
 import com.example.products.repositories.CategoryRepository;
 import com.example.products.repositories.ProductRepository;
-import com.example.products.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -40,11 +41,11 @@ public class ProductService {
   private final UserService userService;
 
   @Transactional(readOnly = true)
-  public List<ProductSearchResponseDTO> getAll() {
-    return productRepository.findAll()
-        .stream()
-        .map(productMapper::toDTO)
-        .toList();
+  public PagedDTO<ProductSearchResponseDTO> getAll(int page, int itemsPerPage) {
+    Pageable pageable = PageRequest.of(page, itemsPerPage);
+    Page<Product> products = productRepository.findAll(pageable);
+
+    return toPageDTO(products);
   }
 
   @Transactional(readOnly = true)
@@ -88,10 +89,24 @@ public class ProductService {
     productRepository.deleteById(Long.valueOf(id));
   }
 
-  public List<ProductSearchResponseDTO> getProductsByCategory(String categoryId) {
-    List<Product> productsByCategory = productRepository.findAllByCategoryId(Long.valueOf(categoryId));
-    return productsByCategory.stream()
+  public PagedDTO<ProductSearchResponseDTO> getProductsByCategory(String categoryId, int page, int itemsPerPage) {
+    Pageable pageable = PageRequest.of(page, itemsPerPage);
+    Page<Product> productsByCategory = productRepository.findAllByCategoryId(Long.valueOf(categoryId), pageable);
+
+    return toPageDTO(productsByCategory);
+  }
+
+  private PagedDTO<ProductSearchResponseDTO> toPageDTO(Page<Product> productPage) {
+    List<ProductSearchResponseDTO> productDTOs = productPage.getContent()
+        .stream()
         .map(productMapper::toDTO)
         .toList();
+
+    return new PagedDTO<>(
+        productDTOs,
+        productPage.getNumber(),
+        productPage.getTotalPages(),
+        productPage.getTotalElements()
+    );
   }
 }
