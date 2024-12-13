@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +43,7 @@ public class ProductService {
 
   @Transactional(readOnly = true)
   public PagedDTO<ProductSearchResponseDTO> getAll(int page, int itemsPerPage) {
-    Pageable pageable = PageRequest.of(page, itemsPerPage);
+    Pageable pageable = PageRequest.of(page, itemsPerPage, Sort.by(Sort.Direction.ASC, "created"));
     Page<Product> products = productRepository.findAll(pageable);
 
     return toPageDTO(products);
